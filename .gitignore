@@ -5,3 +5,6 @@ prime/
 node_modules/
 coverage/
 *.swp
+.idea
+package-lock.json
+yarn.lock

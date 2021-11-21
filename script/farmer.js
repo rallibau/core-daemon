@@ -2,7 +2,7 @@
 
 'use strict';
 
-const utils = require('../lib/utils');
+const customStorage = require('../lib/customStorage/adapters');
 const storj = require('storj-lib');
 const Logger = require('kad-logger-json');
 const config = JSON.parse(JSON.stringify(require('../lib/config/farmer')));
@@ -42,7 +42,16 @@ if (config.S3 && config.S3.enabled) {
       logger: config.logger
     }
   );
-} else {
+}
+else if (config.fs_store_manager && config.fs_store_manager.enabled){
+  config.storageManager = new customStorage.FileStorageAdapter(
+      new customStorage.FileStorageAdapter(config.storagePath, { ...config.fs_store_manager, nodeID: config.keyPair.getNodeID() }),
+      {
+        maxCapacity: spaceAllocation,
+        logger: config.logger
+      }
+  );
+}else {
   config.storageManager = new storj.StorageManager(
     new storj.EmbeddedStorageAdapter(config.storagePath),
     {
