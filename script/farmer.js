@@ -44,8 +44,8 @@ if (config.S3 && config.S3.enabled) {
   );
 }
 else if (config.fs_store_manager && config.fs_store_manager.enabled){
-  config.storageManager = new customStorage.FileStorageAdapter(
-      new customStorage.FileStorageAdapter(config.storagePath, { ...config.fs_store_manager, nodeID: config.keyPair.getNodeID() }),
+  config.storageManager = new customStorage.StorageManager(
+      new customStorage.FileStorageAdapter(config.storagePath),
       {
         maxCapacity: spaceAllocation,
         logger: config.logger
